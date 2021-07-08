@@ -55,6 +55,10 @@ func (wp WorkerPool) Run(ctx context.Context) {
 		// reading from jobs channel and pushing calcs to results channel
 		go worker(ctx, &wg, wp.jobs, wp.results)
 	}
+
+	wg.Wait()
+	close(wp.Done)
+	close(wp.results)
 }
 
 func (wp WorkerPool) Results() <-chan Result {
